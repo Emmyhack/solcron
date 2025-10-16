@@ -9,12 +9,12 @@ import { ToastProvider } from '@/components/providers/ToastProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'SolCron Dashboard',
-  description: 'Decentralized automation platform for Solana',
-  keywords: ['Solana', 'DeFi', 'Automation', 'Smart Contracts', 'Blockchain'],
+  title: 'SolCron - Solana Automation Platform',
+  description: 'Professional decentralized automation platform for Solana blockchain',
+  keywords: ['Solana', 'DeFi', 'Automation', 'Smart Contracts', 'Blockchain', 'Chainlink'],
   authors: [{ name: 'SolCron Team' }],
   viewport: 'width=device-width, initial-scale=1',
-  themeColor: '#0ea5e9',
+  themeColor: '#3b82f6',
 };
 
 export default function RootLayout({
@@ -24,12 +24,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="h-full">
-      <body className={`${inter.className} h-full bg-background`}>
+      <body className={`${inter.className} h-full bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 antialiased`}>
         <WalletContextProvider>
           <SolCronProvider>
             <DashboardProvider>
               <ToastProvider>
-                <div className="min-h-screen flex flex-col">
+                <div className="min-h-screen flex flex-col bg-slate-50 dark:bg-slate-900">
                   {children}
                 </div>
               </ToastProvider>

@@ -2,65 +2,99 @@
 @tailwind components;
 @tailwind utilities;
 
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 221.2 83.2% 53.3%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 221.2 83.2% 53.3%;
-    --radius: 0.75rem;
+    /* Chainlink Brand Colors */
+    --background: 255 255 255;
+    --foreground: 15 23 42;
+    --card: 255 255 255;
+    --card-foreground: 15 23 42;
+    --popover: 255 255 255;
+    --popover-foreground: 15 23 42;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --secondary: 248 250 252;
+    --secondary-foreground: 71 85 105;
+    --muted: 248 250 252;
+    --muted-foreground: 100 116 139;
+    --accent: 241 245 249;
+    --accent-foreground: 15 23 42;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 226 232 240;
+    --input: 226 232 240;
+    --ring: 59 130 246;
+    --radius: 6px;
+    
+    /* Chainlink specific colors */
+    --chainlink-blue: 59 130 246;
+    --chainlink-navy: 15 23 42;
+    --chainlink-gray: 71 85 105;
+    --chainlink-light-gray: 148 163 184;
+    --success: 34 197 94;
+    --warning: 245 158 11;
+    --error: 239 68 68;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 217.2 91.2% 59.8%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 224.3 76.3% 94.1%;
+    --background: 15 23 42;
+    --foreground: 248 250 252;
+    --card: 30 41 59;
+    --card-foreground: 248 250 252;
+    --popover: 30 41 59;
+    --popover-foreground: 248 250 252;
+    --primary: 59 130 246;
+    --primary-foreground: 255 255 255;
+    --secondary: 51 65 85;
+    --secondary-foreground: 226 232 240;
+    --muted: 51 65 85;
+    --muted-foreground: 148 163 184;
+    --accent: 51 65 85;
+    --accent-foreground: 248 250 252;
+    --destructive: 239 68 68;
+    --destructive-foreground: 255 255 255;
+    --border: 51 65 85;
+    --input: 51 65 85;
+    --ring: 59 130 246;
+    
+    --chainlink-blue: 96 165 250;
+    --chainlink-navy: 30 41 59;
+    --chainlink-gray: 148 163 184;
+    --chainlink-light-gray: 100 116 139;
   }
 }
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-gray-200 dark:border-slate-700;
   }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+  
+  h1 {
+    @apply text-3xl md:text-4xl;
+  }
+  
+  h2 {
+    @apply text-2xl md:text-3xl;
+  }
+  
+  h3 {
+    @apply text-xl md:text-2xl;
   }
 }
 
 @layer components {
   .gradient-text {
-    @apply bg-gradient-to-r from-solana-500 via-blue-500 to-purple-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-blue-500 via-blue-600 to-purple-600 bg-clip-text text-transparent;
   }
   
   .glass-effect {
@@ -105,7 +139,7 @@
   }
   
   .metric-card {
-    @apply bg-card border rounded-lg p-6 card-shadow hover:shadow-xl transition-shadow duration-200;
+    @apply bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg p-6 shadow-sm hover:shadow-lg transition-shadow duration-200;
   }
   
   .nav-item {
@@ -113,26 +147,47 @@
   }
   
   .nav-item-active {
-    @apply bg-primary text-primary-foreground;
+    @apply bg-blue-500 text-white;
   }
   
   .nav-item-inactive {
-    @apply text-muted-foreground hover:text-foreground hover:bg-accent;
+    @apply text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 hover:bg-slate-100 dark:hover:bg-slate-800;
   }
   
-  .job-status-badge {
+    .status-badge {
     @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
   }
   
-  .job-status-active {
-    @apply bg-success-100 text-success-800 dark:bg-success-900 dark:text-success-200;
+  .status-badge-success {
+    @apply bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200;
   }
   
-  .job-status-inactive {
+  .status-badge-pending {
     @apply bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200;
   }
   
-  .job-status-error {
-    @apply bg-error-100 text-error-800 dark:bg-error-900 dark:text-error-200;
+  .status-badge-error {
+    @apply bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200;
+  }
+
+  /* Wallet Adapter Button Styles */
+  .wallet-adapter-button-trigger .wallet-adapter-button {
+    @apply bg-chainlink-blue hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-lg transition-colors duration-200 border-0;
+  }
+
+  .wallet-adapter-button-trigger .wallet-adapter-button:not([disabled]):hover {
+    @apply bg-blue-600;
+  }
+
+  .wallet-adapter-button-trigger .wallet-adapter-button[disabled] {
+    @apply opacity-50 cursor-not-allowed;
+  }
+
+  .wallet-adapter-modal {
+    @apply bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 rounded-lg shadow-xl;
+  }
+
+  .wallet-adapter-modal-title {
+    @apply text-slate-900 dark:text-slate-100 font-semibold;
   }
 }

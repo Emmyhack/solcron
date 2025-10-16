@@ -7,11 +7,11 @@ export default function HomePage() {
       <div className="space-y-8">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-bold tracking-tight gradient-text">
+            <h1 className="text-2xl font-semibold tracking-tight text-slate-900 dark:text-white">
               SolCron Dashboard
             </h1>
-            <p className="text-muted-foreground mt-2">
-              Monitor and manage your automation jobs on Solana
+            <p className="text-slate-600 dark:text-slate-300 mt-1">
+              Monitor and manage your automation jobs on Solana blockchain
             </p>
           </div>
         </div>

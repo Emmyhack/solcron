@@ -5,7 +5,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useDashboardStore } from '@/store/dashboard';
 import { formatSOL, formatNumber, formatPercentage } from '@/lib/utils';
 
-export function MetricsGrid() {
+export const MetricsGrid = React.memo(function MetricsGrid() {
   const { jobs, keepers, registry } = useDashboardStore();
 
   const metrics = React.useMemo(() => {
@@ -82,24 +82,33 @@ export function MetricsGrid() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
       {metricCards.map((metric, index) => (
-        <Card key={index} className="hover:shadow-lg transition-shadow duration-200">
-          <CardContent className="p-4">
-            <div className="flex items-center justify-between mb-2">
-              <div className={`w-3 h-3 rounded-full ${metric.bgColor}`}></div>
-              <span className="text-xs text-success-600 font-medium">
+        <Card key={index} className="metric-card group">
+          <CardContent className="p-5">
+            <div className="flex items-center justify-between mb-3">
+              <div className="text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase tracking-wider">
+                {metric.title}
+              </div>
+              <span className="status-badge status-badge-success text-xs">
                 {metric.trend}
               </span>
             </div>
             
-            <div className="space-y-1">
-              <div className={`text-2xl font-bold ${metric.color}`}>
+            <div className="space-y-2">
+              <div className="text-2xl font-bold text-slate-900 dark:text-white tracking-tight">
                 {metric.value}
               </div>
-              <div className="text-xs text-muted-foreground">
-                {metric.title}
-              </div>
-              <div className="text-xs text-muted-foreground">
+              <div className="text-sm text-slate-500 dark:text-slate-400">
                 {metric.subtitle}
+              </div>
+            </div>
+            
+            {/* Progress indicator */}
+            <div className="mt-3">
+              <div className="w-full bg-slate-200 dark:bg-slate-700 rounded-full h-1">
+                <div 
+                  className="h-1 rounded-full bg-chainlink-blue transition-all duration-300"
+                  style={{ width: `${Math.min(100, (index + 1) * 15)}%` }}
+                ></div>
               </div>
             </div>
           </CardContent>
@@ -107,4 +116,4 @@ export function MetricsGrid() {
       ))}
     </div>
   );
-}
+});

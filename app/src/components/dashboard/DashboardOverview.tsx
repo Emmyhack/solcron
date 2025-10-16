@@ -10,7 +10,7 @@ import { SystemHealth } from './SystemHealth';
 import { useWallet } from '@/components/providers/WalletProvider';
 import { useSolCron } from '@/components/providers/SolCronProvider';
 
-export function DashboardOverview() {
+export const DashboardOverview = React.memo(function DashboardOverview() {
   const { connected } = useWallet();
   const { refreshAll, loading, error } = useSolCron();
 
@@ -24,18 +24,18 @@ export function DashboardOverview() {
   // Show wallet connection prompt if not connected
   if (!connected) {
     return (
-      <div className="min-h-[400px] flex items-center justify-center">
-        <Card className="w-full max-w-md">
-          <CardContent className="flex flex-col items-center space-y-4 pt-6">
-            <div className="w-12 h-12 bg-gray-200 rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 bg-gray-400 rounded"></div>
+      <div className="min-h-[500px] flex items-center justify-center">
+        <Card className="w-full max-w-lg bg-white dark:bg-slate-800 shadow-lg">
+          <CardContent className="flex flex-col items-center space-y-6 p-8">
+            <div className="w-16 h-16 bg-chainlink-blue/10 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-chainlink-blue rounded-full"></div>
             </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+            <div className="text-center space-y-3">
+              <h3 className="text-xl font-semibold text-slate-900 dark:text-slate-100">
                 Connect Your Wallet
               </h3>
-              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
-                Connect your Solana wallet to access the SolCron dashboard and manage your automation jobs.
+              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+                Connect your Solana wallet to access the SolCron automation platform and manage your jobs.
               </p>
             </div>
           </CardContent>
@@ -47,22 +47,22 @@ export function DashboardOverview() {
   // Show error state if there's an error
   if (error && !loading) {
     return (
-      <div className="min-h-[400px] flex items-center justify-center">
-        <Card className="w-full max-w-md border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/20">
-          <CardContent className="flex flex-col items-center space-y-4 pt-6">
-            <div className="w-12 h-12 bg-red-200 rounded-lg flex items-center justify-center">
-              <div className="w-6 h-6 bg-red-500 rounded-full"></div>
+      <div className="min-h-[500px] flex items-center justify-center">
+        <Card className="w-full max-w-lg border-red-200 bg-red-50 dark:border-red-800 dark:bg-red-900/10 shadow-lg">
+          <CardContent className="flex flex-col items-center space-y-6 p-8">
+            <div className="w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-red-500 rounded-full"></div>
             </div>
-            <div className="text-center">
-              <h3 className="text-lg font-semibold text-red-900 dark:text-red-100">
+            <div className="text-center space-y-3">
+              <h3 className="text-xl font-semibold text-red-900 dark:text-red-100">
                 Connection Error
               </h3>
-              <p className="text-sm text-red-700 dark:text-red-300 mt-2">
+              <p className="text-sm text-red-700 dark:text-red-300">
                 {error}
               </p>
               <button 
                 onClick={refreshAll}
-                className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+                className="mt-4 px-6 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors duration-200 font-medium"
               >
                 Try Again
               </button>
@@ -84,14 +84,16 @@ export function DashboardOverview() {
       {/* Main Content Grid */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Active Jobs */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                <span>Active Jobs</span>
+        <Card className="bg-white dark:bg-slate-800 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between text-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 rounded-full bg-chainlink-blue"></div>
+                <span className="font-semibold text-slate-900 dark:text-slate-100">Active Jobs</span>
               </div>
-              {loading && <div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />}
+              {loading && (
+                <div className="w-4 h-4 animate-spin rounded-full border-2 border-chainlink-blue border-t-transparent" />
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -100,14 +102,16 @@ export function DashboardOverview() {
         </Card>
         
         {/* Active Keepers */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                <span>Active Keepers</span>
+        <Card className="bg-white dark:bg-slate-800 shadow-sm">
+          <CardHeader className="pb-3">
+            <CardTitle className="flex items-center justify-between text-lg">
+              <div className="flex items-center space-x-3">
+                <div className="w-2 h-2 rounded-full bg-green-500"></div>
+                <span className="font-semibold text-slate-900 dark:text-slate-100">Active Keepers</span>
               </div>
-              {loading && <div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />}
+              {loading && (
+                <div className="w-4 h-4 animate-spin rounded-full border-2 border-chainlink-blue border-t-transparent" />
+              )}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -117,14 +121,16 @@ export function DashboardOverview() {
       </div>
       
       {/* Recent Activity */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center justify-between">
-            <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-              <span>Recent Executions</span>
+      <Card className="bg-white dark:bg-slate-800 shadow-sm">
+        <CardHeader className="pb-3">
+          <CardTitle className="flex items-center justify-between text-lg">
+            <div className="flex items-center space-x-3">
+              <div className="w-2 h-2 rounded-full bg-amber-500"></div>
+              <span className="font-semibold text-slate-900 dark:text-slate-100">Recent Executions</span>
             </div>
-            {loading && <div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />}
+            {loading && (
+              <div className="w-4 h-4 animate-spin rounded-full border-2 border-chainlink-blue border-t-transparent" />
+            )}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -133,4 +139,4 @@ export function DashboardOverview() {
       </Card>
     </div>
   );
-}
+});
