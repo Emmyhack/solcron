@@ -88,7 +88,7 @@ export function DashboardOverview() {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                <div className="w-3 h-3 rounded-full bg-blue-500"></div>
                 <span>Active Jobs</span>
               </div>
               {loading && <div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />}
@@ -104,7 +104,7 @@ export function DashboardOverview() {
           <CardHeader>
             <CardTitle className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                <div className="w-3 h-3 rounded-full bg-green-500"></div>
                 <span>Active Keepers</span>
               </div>
               {loading && <div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />}
@@ -121,7 +121,7 @@ export function DashboardOverview() {
         <CardHeader>
           <CardTitle className="flex items-center justify-between">
             <div className="flex items-center space-x-2">
-              <div className="w-3 h-3 bg-purple-500 rounded-full"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
               <span>Recent Executions</span>
             </div>
             {loading && <div className="w-4 h-4 animate-spin rounded-full border-2 border-blue-600 border-t-transparent" />}
