@@ -57,17 +57,9 @@ pub mod solcron_execution {
             data,
         };
 
-        // Prepare account infos for CPI
-        let mut account_infos = Vec::new();
-        account_infos.push(ctx.accounts.target_program.to_account_info());
-        
-        // Add remaining accounts
-        for account in ctx.remaining_accounts {
-            account_infos.push(account.to_account_info());
-        }
-
-        // Execute the CPI call with error handling
-        match anchor_lang::solana_program::program::invoke(&instruction, &account_infos) {
+        // Execute the CPI call with remaining accounts
+        // Use remaining_accounts directly to avoid lifetime issues
+        match anchor_lang::solana_program::program::invoke(&instruction, ctx.remaining_accounts) {
             Ok(()) => {
                 emit!(CpiExecutionSuccess {
                     target_program: ctx.accounts.target_program.key(),
@@ -115,22 +107,16 @@ pub mod solcron_execution {
             data,
         };
 
-        // Prepare account infos and signer seeds
-        let mut account_infos = Vec::new();
-        account_infos.push(ctx.accounts.target_program.to_account_info());
-        
-        for account in ctx.remaining_accounts {
-            account_infos.push(account.to_account_info());
-        }
+        // Use remaining_accounts directly for CPI with seeds
 
         // Convert seeds to the correct format for invoke_signed
         let seeds_refs: Vec<&[u8]> = seeds.iter().map(|seed| seed.as_slice()).collect();
         let signer_seeds = &[seeds_refs.as_slice()];
 
-        // Execute signed CPI call
+        // Execute signed CPI call with remaining accounts
         match anchor_lang::solana_program::program::invoke_signed(
             &instruction,
-            &account_infos,
+            ctx.remaining_accounts,
             signer_seeds,
         ) {
             Ok(()) => {

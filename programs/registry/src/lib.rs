@@ -8,7 +8,6 @@ pub mod errors;
 
 use instructions::*;
 use state::*;
-use errors::*;
 
 #[program]
 pub mod solcron_registry {
