@@ -1,0 +1,74 @@
+[package]
+name = "solcron-sdk"
+version = "0.1.0"
+edition = "2021"
+authors = ["SolCron Team"]
+description = "Rust SDK for SolCron - Decentralized Automation Platform for Solana"
+license = "MIT"
+repository = "https://github.com/solcron/solcron"
+documentation = "https://docs.rs/solcron-sdk"
+keywords = ["solana", "automation", "defi", "cron", "keeper"]
+categories = ["api-bindings", "blockchain"]
+
+[lib]
+name = "solcron_sdk"
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+# Solana dependencies
+solana-program = "~1.18.0"
+solana-client = { version = "~1.18.0", optional = true }
+solana-sdk = { version = "~1.18.0", optional = true }
+solana-account-decoder = { version = "~1.18.0", optional = true }
+
+# Anchor framework
+anchor-lang = { version = "0.31.1", features = ["init-if-needed"] }
+anchor-client = { version = "0.31.1", optional = true }
+anchor-spl = "0.31.1"
+
+# Serialization
+borsh = "1.5.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+
+# Async runtime (for client)
+tokio = { version = "1.0", features = ["full"], optional = true }
+
+# Utilities
+thiserror = "1.0"
+anyhow = "1.0"
+bs58 = "0.5"
+
+# Logging
+log = "0.4"
+
+# Time handling
+chrono = { version = "0.4", features = ["serde"] }
+
+[dev-dependencies]
+tokio-test = "0.4"
+solana-program-test = "~1.18.0"
+solana-test-validator = "~1.18.0"
+
+[features]
+default = ["client"]
+client = [
+    "solana-client", 
+    "solana-sdk", 
+    "solana-account-decoder",
+    "anchor-client",
+    "tokio"
+]
+no-entrypoint = []
+
+[[example]]
+name = "register_job"
+required-features = ["client"]
+
+[[example]]
+name = "keeper_node"
+required-features = ["client"]
+
+[[example]]
+name = "cpi_integration"
+path = "examples/cpi_integration.rs"

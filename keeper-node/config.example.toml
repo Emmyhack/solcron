@@ -1,0 +1,63 @@
+# SolCron Keeper Configuration Example
+# Copy this file to keeper-config.toml and modify for your setup
+
+[keeper]
+# Path to your keeper's private key file (JSON or raw bytes)
+wallet_path = "/path/to/your/keeper-keypair.json"
+# Initial stake amount in lamports (1 SOL = 1,000,000,000 lamports)
+stake_amount = 1000000000
+
+[rpc]
+# Primary RPC endpoint
+primary_url = "https://api.mainnet-beta.solana.com"
+# Fallback RPC endpoints (used if primary fails)
+fallback_urls = [
+    "https://solana-api.projectserum.com",
+    "https://rpc.ankr.com/solana"
+]
+# Request timeout in milliseconds
+request_timeout_ms = 30000
+# Maximum number of retries for RPC requests
+max_retries = 3
+
+[monitoring]
+# How often to check for jobs (milliseconds)
+poll_interval_ms = 1000
+# Maximum number of jobs to process concurrently
+max_concurrent_jobs = 10
+# How long to cache job data (seconds)
+job_cache_ttl_seconds = 60
+# Enable WebSocket for real-time updates
+enable_websocket = true
+
+[execution]
+# Priority fee percentile to use (0-100)
+priority_fee_percentile = 50
+# Maximum number of execution retries
+max_retries = 3
+# Delay between retries (milliseconds)
+retry_delay_ms = 2000
+# Maximum compute units per transaction
+max_compute_units = 1400000
+# Enable transaction simulation before execution
+simulation_enabled = true
+
+[database]
+# PostgreSQL connection URL
+url = "postgresql://solcron_user:password@localhost:5432/solcron"
+# Maximum number of database connections
+max_connections = 10
+# Connection timeout (milliseconds)
+connection_timeout_ms = 10000
+
+[logging]
+# Log level (trace, debug, info, warn, error)
+level = "info"
+# Optional: Log to file (comment out for console only)
+file_path = "keeper.log"
+
+[metrics]
+# Enable Prometheus metrics endpoint
+enabled = true
+# Port for metrics server
+port = 9090

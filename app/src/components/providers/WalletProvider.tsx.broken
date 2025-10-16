@@ -1,0 +1,147 @@
+'use client';
+
+import React, { createContext, useContext, useEffect, useState, useMemo } from 'react';
+import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
+import { WalletAdapterNetwork } from '@solana/wallet-adapter-base';
+import {
+  ConnectionProvider,
+  WalletProvider as SolanaWalletProvider,
+  useConnection,
+  useWallet as useSolanaWallet,
+} from '@solana/wallet-adapter-react';
+import {
+  WalletModalProvider,
+  WalletMultiButton,
+} from '@solana/wallet-adapter-react-ui';
+import {
+  PhantomWalletAdapter,
+  SolflareWalletAdapter,
+
+// Default styles that can be overridden by your app
+require('@solana/wallet-adapter-react-ui/styles.css');
+
+interface SolCronWalletContextType {
+  connected: boolean;
+  publicKey: PublicKey | null;
+  balance: number;
+  connecting: boolean;
+  connection: Connection;
+  signTransaction: any;
+  signAllTransactions: any;
+  sendTransaction: any;
+  refreshBalance: () => Promise<void>;
+  network: WalletAdapterNetwork;
+}
+
+const SolCronWalletContext = createContext<SolCronWalletContextType | null>(null);
+
+interface WalletProviderProps {
+  children: React.ReactNode;
+}
+
+// Inner component that uses the Solana wallet context
+function SolCronWalletContextProvider({ children }: WalletProviderProps) {
+  const { connection } = useConnection();
+  const { 
+    publicKey, 
+    connected, 
+    connecting,
+    signTransaction,
+    signAllTransactions,
+    sendTransaction
+  } = useSolanaWallet();
+  
+  const [balance, setBalance] = useState(0);
+
+  const refreshBalance = async () => {
+    if (publicKey && connection) {
+      try {
+        const balance = await connection.getBalance(publicKey);
+        setBalance(balance);
+      } catch (error) {
+        console.error('Failed to fetch balance:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    refreshBalance();
+  }, [publicKey, connection]);
+
+  // Refresh balance every 30 seconds when connected
+  useEffect(() => {
+    if (connected && publicKey) {
+      const interval = setInterval(refreshBalance, 30000);
+      return () => clearInterval(interval);
+    }
+  }, [connected, publicKey]);
+
+  const value: SolCronWalletContextType = {
+    connected,
+    publicKey,
+    balance,
+    connecting,
+    connection,
+    signTransaction,
+    signAllTransactions,
+    sendTransaction,
+    refreshBalance,
+    network: process.env.NODE_ENV === 'development' ? WalletAdapterNetwork.Devnet : WalletAdapterNetwork.Mainnet,
+  };
+
+  return (
+    <SolCronWalletContext.Provider value={value}>
+      {children}
+    </SolCronWalletContext.Provider>
+  );
+}
+
+// Main provider component
+export function WalletContextProvider({ children }: WalletProviderProps) {
+  // The network can be set to 'devnet', 'testnet', or 'mainnet-beta'
+  const network = process.env.NODE_ENV === 'development' 
+    ? WalletAdapterNetwork.Devnet 
+    : WalletAdapterNetwork.Mainnet;
+
+  // RPC endpoint
+  const endpoint = useMemo(() => {
+    if (process.env.NODE_ENV === 'development') {
+      // Use local validator if available, otherwise devnet
+      return process.env.NEXT_PUBLIC_RPC_URL || 'http://127.0.0.1:8899' || clusterApiUrl(network);
+    }
+    return process.env.NEXT_PUBLIC_RPC_URL || clusterApiUrl(network);
+  }, [network]);
+
+  // Initialize wallet adapters
+  const wallets = useMemo(
+    () => [
+      new PhantomWalletAdapter(),
+      new SolflareWalletAdapter(),
+      new BackpackWalletAdapter(),
+    ],
+    []
+  );
+
+  return (
+    <ConnectionProvider endpoint={endpoint}>
+      <SolanaWalletProvider wallets={wallets} autoConnect>
+        <WalletModalProvider>
+          <SolCronWalletContextProvider>
+            {children}
+          </SolCronWalletContextProvider>
+        </WalletModalProvider>
+      </SolanaWalletProvider>
+    </ConnectionProvider>
+  );
+}
+
+export function useWallet(): SolCronWalletContextType {
+  const context = useContext(SolCronWalletContext);
+  if (!context) {
+    throw new Error('useWallet must be used within a WalletProvider');
+  }
+  return context;
+}
+
+// Export wallet button for easy use
+export { WalletMultiButton };
